@@ -1,0 +1,13 @@
+<?php
+namespace Modules\{module}\Src\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class {name} extends Model
+{
+    use HasFactory;
+    // protected $table = 'test';
+    //protected $fillable = [
+    //];
+}
