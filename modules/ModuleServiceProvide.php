@@ -5,7 +5,8 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-
+use Modules\Product\Src\Repositories\ProductRepository;
+use Modules\Product\Src\Repositories\ProductRepositoryInterface;
 
 class ModuleServiceProvide extends ServiceProvider
 {
@@ -18,10 +19,10 @@ class ModuleServiceProvide extends ServiceProvider
     ];
     public function bindingRepository()
     {
-        // $this->app->singleton(
-        //     UserRepositoryInterface::class,
-        //     UserRepository::class
-        // );
+        $this->app->singleton(
+            ProductRepositoryInterface::class,
+            ProductRepository::class
+        );
 
     }
     public function boot()

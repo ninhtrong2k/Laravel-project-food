@@ -21,9 +21,8 @@ name => var_char(100)
 slug => var_char(100)
 category_id => int(11)
 image_id => int(11)
-evaluate_id => int
+evaluate_id => int(11)
 view => int(11)
-quantity => int(11)
 quantity => int(11)
 status => bolean
 created_at => datetime
@@ -76,3 +75,22 @@ remember_token =>
 created_at => datetime 
 updated_at => datetime
 
+## create migration table
+php artisan module:make-migration create_product_table Product
+
+php artisan migrate
+
+## install fileManager
+ composer require unisharp/laravel-filemanager
+ php artisan vendor:publish --tag=lfm_config
+ php artisan vendor:publish --tag=lfm_public
+ php artisan storage:link
+ php artisan vendor:publish
+
+add route link fileManager
+Route::group(['prefix' => 'filemanager', 'middleware' => ['web']], function () {
+    \UniSharp\LaravelFilemanager\Lfm::routes();
+});
+
+config lfm.php
+should_create_thumbnails' => true, switch to 'should_create_thumbnails' => false,

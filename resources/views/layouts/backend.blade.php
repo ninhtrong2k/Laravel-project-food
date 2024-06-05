@@ -38,13 +38,9 @@
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-
                     <!-- Page Heading -->
                     @include('parts.backend.page_heading')
-                    <!-- Content Row -->
-                    <div class="row">
-                        @yield('content')
-                    </div>
+                    @yield('content')
                 </div>
             </div>
             @include('parts.backend.footer')
@@ -90,7 +86,11 @@
     <script src="{{ asset('backend/js/demo/chart-area-demo.js') }}"></script>
     <script src="{{ asset('backend/js/demo/chart-pie-demo.js') }}"></script>
 
-
+    {{-- laravel-filemanager --}}
+    <script src="/vendor/laravel-filemanager/js/stand-alone-button.js"></script>
+    <script>
+        $('#lfm').filemanager('image');
+    </script>
 </body>
 
 </html>
