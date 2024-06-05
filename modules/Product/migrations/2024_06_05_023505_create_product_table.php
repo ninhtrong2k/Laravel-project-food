@@ -18,10 +18,11 @@ return new class extends Migration
             $table->string('name', 100);
             $table->string('slug', 100);
             $table->integer('category_id')->default(0);
-            $table->integer('image_id')->default(0);
+            $table->text('image');
             $table->integer('evaluate_id')->default(0);
             $table->integer('view')->default(0);
             $table->integer('quantity')->default(0);
+            $table->text('description');
             $table->boolean('status')->default(0);
             $table->timestamps();
         });
