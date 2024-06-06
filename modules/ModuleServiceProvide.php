@@ -5,7 +5,9 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Modules\User\Src\Repositories\UserRepository;
 use Modules\Product\Src\Repositories\ProductRepository;
+use Modules\User\Src\Repositories\UserRepositoryInterface;
 use Modules\Product\Src\Repositories\ProductRepositoryInterface;
 
 class ModuleServiceProvide extends ServiceProvider
@@ -22,6 +24,10 @@ class ModuleServiceProvide extends ServiceProvider
         $this->app->singleton(
             ProductRepositoryInterface::class,
             ProductRepository::class
+        );
+        $this->app->singleton(
+           UserRepositoryInterface::class,
+           UserRepository::class
         );
 
     }

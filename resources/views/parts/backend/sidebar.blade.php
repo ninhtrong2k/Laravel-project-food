@@ -35,8 +35,8 @@
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="buttons.html">Lists</a>
-                        <a class="collapse-item" href="cards.html">Create</a>
+                        <a class="collapse-item" href="{{route("admin.products.index")}}">Lists</a>
+                        <a class="collapse-item" href="{{route("admin.products.create")}}">Create</a>
                     </div>
                 </div>
             </li>
@@ -50,8 +50,23 @@
                 <div id="collapseUsers" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="buttons.html">Lists</a>
-                        <a class="collapse-item" href="cards.html">Create</a>
+                        <a class="collapse-item" href="{{route("admin.users.index")}}">Lists</a>
+                        <a class="collapse-item" href="{{route("admin.users.create")}}">Create</a>
+                    </div>
+                </div>
+            </li>
+            <!-- Nav Item - Category Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCategory"
+                    aria-expanded="true" aria-controls="collapseCategory">
+                    <i class="fa-solid fa-list" style="margin-left: 3px;"></i>
+                    <span>Categories</span>
+                </a>
+                <div id="collapseCategory" class="collapse" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="{{route("admin.users.index")}}">Lists</a>
+                        <a class="collapse-item" href="{{route("admin.users.create")}}">Create</a>
                     </div>
                 </div>
             </li>
