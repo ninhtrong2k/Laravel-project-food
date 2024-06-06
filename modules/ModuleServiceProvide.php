@@ -7,8 +7,10 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Modules\User\Src\Repositories\UserRepository;
 use Modules\Product\Src\Repositories\ProductRepository;
+use Modules\Category\Src\Repositories\CategoryRepository;
 use Modules\User\Src\Repositories\UserRepositoryInterface;
 use Modules\Product\Src\Repositories\ProductRepositoryInterface;
+use Modules\Category\Src\Repositories\CategoryRepositoryInterface;
 
 class ModuleServiceProvide extends ServiceProvider
 {
@@ -28,6 +30,10 @@ class ModuleServiceProvide extends ServiceProvider
         $this->app->singleton(
            UserRepositoryInterface::class,
            UserRepository::class
+        );
+        $this->app->singleton(
+          CategoryRepositoryInterface::class,
+          CategoryRepository::class
         );
 
     }
