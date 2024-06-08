@@ -43,12 +43,12 @@
                     <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4"
                         data-bs-toggle="modal" data-bs-target="#searchModal"><i
                             class="fas fa-search text-primary"></i></button>
-                    <a href="#" class="position-relative me-4 my-auto">
+
+                    <button type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+                        aria-controls="offcanvasRight" class="position-relative me-4 my-auto btn-cart">
                         <i class="fa fa-shopping-bag fa-2x"></i>
-                        <span
-                            class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1"
-                            style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
-                    </a>
+                        <span class="total-quantity"></span>
+                    </button>
                     <a href="#" class="my-auto">
                         <i class="fas fa-user fa-2x"></i>
                     </a>
@@ -58,7 +58,21 @@
     </div>
 </div>
 
+{{-- Cart  --}}
+<div id="offcanvasRight" class="offcanvas offcanvas-end" tabindex="-1" aria-labelledby="offcanvasRightLabel">
+    <div class="offcanvas-header">
+        <h4 id="offcanvasRightLabel" class="offcanvas-title">Your Cart</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <ul class="list-group mb-3 cart-list">
+            '<li class="list-group-item">Cart data is invalid or empty (no serve)</li>';
+        </ul>
 
+        <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
+    </div>
+</div>
+{{-- Cart  --}}
 
 <!-- Modal Search Start -->
 <div id="searchModal" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -79,3 +93,6 @@
     </div>
 </div>
 <!-- Modal Search End -->
+<script>
+
+</script>

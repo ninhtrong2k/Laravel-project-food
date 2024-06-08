@@ -117,6 +117,14 @@
 /*** Topbar End ***/
 
 /*** Navbar Start ***/
+
+.btn-cart {
+    outline: none;
+    border: none;
+    background: transparent;
+    color: #81c408;
+}
+
 .navbar .navbar-nav .nav-link {
     padding: 10px 15px;
     font-size: 16px;

@@ -84,5 +84,62 @@ class ProductController extends Controller
         $this->productRepository->delete($product->id);
         return back()->with('msg', __('product::messages.delete.success'));
     }
+    // public function dataApi(){
+    //     return'ok';
+    // }
+    public function dataApi(Request $request)
+    {
+        // Lấy dữ liệu từ yêu cầu dưới dạng JSON
+        $data = $request->json()->all();
+        $dataArr = [];
+        $allPrice = 0;
+        foreach($data as $item){
+            $product = $this->productRepository->find($item['id']);
+            if(!empty($product)){
+                $dataArr[$product['id']] = array(
+                    'id' => $product['id'],
+                    'name' => $product['name'],
+                    'quantity' => $item['quantity'],
+                    'price' => $product['price'],
+                    'total_price' => $item['quantity'] * $product['price'],
+                );
+                $allPrice +=  $item['quantity'] * $product['price'];
+            }
+        }
+        if ($dataArr) {
+            $responseData = [
+                'status' => 'success',
+                'message' => 'Product found successfully',
+                'data' => $dataArr,
+                'allPrice'=> $allPrice,
+            ];
+        } else {
+            $responseData = [
+                'status' => 'error',
+                'message' => 'Product not found',
+            ];
+        }
+    
+        return response()->json($responseData);
+    }
+    public function getNameApi(Request $request){
+        $data = $request->json()->all();
+        $product = $this->productRepository->find($data['id']);
+        if ($product) {
+            $responseData = [
+                'status' => 'success',
+                'message' => 'Product found successfully',
+                'data' => $product['name'],
+            ];
+        } else {
+            $responseData = [
+                'status' => 'error',
+                'message' => 'Product not found',
+            ];
+        }
+        return response()->json($responseData);
 
+
+    }
+    
 }

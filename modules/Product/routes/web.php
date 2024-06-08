@@ -12,6 +12,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 });
 
+Route::post('data','Admin\ProductController@dataApi')->name('data');
+Route::post('dataName','Admin\ProductController@getNameApi')->name('data');
 
 // Route::group(['as' => 'courses.'],function () {
 //     Route::get('/khoa-hoc','Clients\CoursesController@index')->name('index');

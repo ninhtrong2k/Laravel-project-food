@@ -98,3 +98,8 @@ should_create_thumbnails' => true, switch to 'should_create_thumbnails' => false
 'url' => env('APP_URL').'/storage', switch to 'url' => '/storage',
 ## Install tableDatabase
 composer require yajra/laravel-datatables:"^9.0"
+
+## Theme Client
+=> add theme client
+=> add click cart animation 
+=> add toast than add click add cart

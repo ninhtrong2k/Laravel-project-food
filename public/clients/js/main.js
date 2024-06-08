@@ -113,21 +113,21 @@
 
 
     // Modal Video
-    $(document).ready(function () {
-        var $videoSrc;
-        $('.btn-play').click(function () {
-            $videoSrc = $(this).data("src");
-        });
-        console.log($videoSrc);
+    // $(document).ready(function () {
+    //     var $videoSrc;
+    //     $('.btn-play').click(function () {
+    //         $videoSrc = $(this).data("src");
+    //     });
+    //     console.log($videoSrc);
 
-        $('#videoModal').on('shown.bs.modal', function (e) {
-            $("#video").attr('src', $videoSrc + "?autoplay=1&amp;modestbranding=1&amp;showinfo=0");
-        })
+    //     $('#videoModal').on('shown.bs.modal', function (e) {
+    //         $("#video").attr('src', $videoSrc + "?autoplay=1&amp;modestbranding=1&amp;showinfo=0");
+    //     })
 
-        $('#videoModal').on('hide.bs.modal', function (e) {
-            $("#video").attr('src', $videoSrc);
-        })
-    });
+    //     $('#videoModal').on('hide.bs.modal', function (e) {
+    //         $("#video").attr('src', $videoSrc);
+    //     })
+    // });
 
 
 
@@ -149,3 +149,143 @@
 
 })(jQuery);
 
+
+/// JS custom
+const cartItems = JSON.parse(localStorage.getItem('cartItems')) || {};
+renderCartQuantity = (cartItems) => {
+    let totalQuantity = 0;
+    for (const productId in cartItems) {
+        if (cartItems.hasOwnProperty(productId)) {
+            totalQuantity += cartItems[productId].quantity;
+        }
+    }
+    if(totalQuantity === 0){
+        document.querySelector('.total-quantity').innerHTML = ``;
+    }else{
+        document.querySelector('.total-quantity').innerHTML =
+            `<span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">${totalQuantity}</span>`;
+    }
+}
+renderCartQuantity(cartItems)
+
+async function renderCartItems(cartItems) {
+    if (cartItems) {
+        data = await fetchProductDetails(cartItems);
+        if (data && data.allPrice) {
+            allPrice = data.allPrice;
+            cartItemsArray = Object.entries(data.data);
+            if (cartItemsArray) {
+                let cartListHTML = '';
+                cartItemsArray.forEach(([productId, product]) => {
+                    const {
+                        price,
+                        total_price,
+                        quantity,
+                        name
+                    } = product;
+                    cartListHTML += `
+                    <li class="list-group-item d-flex justify-content-between lh-sm align-items-center">
+                        <div>
+                            <h6 class="my-0">${name}</h6>
+                            <small class="text-body-secondary">$${price} 
+                                <button class="decrease-quantity" data-product-id="${productId}">-</button>
+                                <input type="text" value="${quantity}" readonly style="width: 40px; text-align: center;"/>
+                                <button class="increase-quantity" data-product-id="${productId}">+</button>
+                            </small>
+                        </div>
+                        <div>
+                            <span class="text-body-secondary">$${total_price}</span>
+                            <button class="remove-item" data-product-id="${productId}"><i class="fa-solid fa-circle-xmark"></i></button>
+                        <div>
+                    </li>`;
+                });
+                document.querySelector('.cart-list').innerHTML = cartListHTML;
+                document.querySelector('.cart-list').innerHTML += `
+                <li class="list-group-item d-flex justify-content-between">
+                    <span class="fw-bold">Total (USD)</span>
+                    <strong>$${allPrice}</strong>
+                </li>`;
+                // Thêm sự kiện click cho các nút tăng và giảm số lượng
+                document.querySelectorAll('.decrease-quantity').forEach(button => {
+                    button.addEventListener('click', async function() {
+                        const productId = this.getAttribute('data-product-id');
+                        if (cartItems[productId] && cartItems[productId].quantity > 1) {
+                            cartItems[productId].quantity -= 1;
+                        } else {
+                            delete cartItems[productId];
+                        }
+                        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+                        renderCartQuantity(cartItems)
+                        await renderCartItems(cartItems)
+                    });
+                });
+
+                document.querySelectorAll('.increase-quantity').forEach(button => {
+                    button.addEventListener('click', async function() {
+                        const productId = this.getAttribute('data-product-id');
+                        if (cartItems[productId]) {
+                            cartItems[productId].quantity += 1;
+                        }
+                        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+                        renderCartQuantity(cartItems)
+                        await renderCartItems(cartItems)
+                    });
+                });
+
+                document.querySelectorAll('.remove-item').forEach(button => {
+                    button.addEventListener('click', async function() {
+                        const productId = this.getAttribute('data-product-id');
+                        if (cartItems[productId]) {
+                            delete cartItems[productId];
+                        }
+                        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+                        renderCartQuantity(cartItems)
+                        await renderCartItems(cartItems)
+                    });
+                });
+            }
+        } else {
+            document.querySelector('.cart-list').innerHTML =
+                '<li class="list-group-item">Cart data is invalid or empty</li>';
+        }
+    }
+}
+renderCartItems(cartItems)
+async function fetchProductDetails(cartItems) {
+    try {
+        const response = await fetch(`http://localhost:8000/data`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(cartItems)
+        });
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching product details:', error);
+        return null;
+    }
+}
+async function fetchProductName(productId) {
+    try {
+        const response = await fetch(`http://localhost:8000/dataName`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({"id":productId})
+        });
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching product details:', error);
+        return null;
+    }
+}

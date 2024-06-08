@@ -11,4 +11,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     public function getAllProduct(){
         return $this->model->select(['id','name','category_id','image','evaluate_id','view','quantity','created_at'])->latest();
     }
+    public function getProduct($limit=8){
+        return $this->model->select(['id','name','category_id','image','evaluate_id','view','quantity','created_at'])->limit($limit)->get();
+    }
 }
