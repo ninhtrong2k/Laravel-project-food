@@ -15,7 +15,6 @@ class HomeController extends Controller
     }
     public function index()
     {
-        $products = $this->productRepository->getProduct();
-        return view('home::index', compact('products'));
+        return view('home::index');
     }
 }

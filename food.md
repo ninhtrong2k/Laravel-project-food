@@ -24,6 +24,8 @@ image_id => int(11)
 evaluate_id => int(11)
 view => int(11)
 quantity => int(11)
+price => int(11) => new
+detail => text => new
 status => bolean
 created_at => datetime
 updated_at => datetime
@@ -103,3 +105,7 @@ composer require yajra/laravel-datatables:"^9.0"
 => add theme client
 => add click cart animation 
 => add toast than add click add cart
+
+## Key sql
+
+composer require doctrine/dbal

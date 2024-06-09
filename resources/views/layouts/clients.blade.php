@@ -96,7 +96,13 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <!-- Template Javascript -->
     <script src="{{ asset('clients/js/main.js') }}"></script>
+    <script src="{{ asset('clients/js/products.js') }}"></script>
     @yield('scripts')
+    <script>
+        // render list and quantity cart 
+        const cartItems = JSON.parse(localStorage.getItem('cartItems')) || {};
+        renderCartItems(cartItems)
+    </script>
 </body>
 
 </html>

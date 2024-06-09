@@ -11,10 +11,10 @@
                         value="{{ old('name') }}">
                 </div>
                 @error('name')
-                <p class="text-danger">
-                    {{ $message }}
-                </p>
-            @enderror
+                    <p class="text-danger">
+                        {{ $message }}
+                    </p>
+                @enderror
             </div>
             <div class="col-xl-6 col-md-6 mb-6">
                 <div class="mb-3">
@@ -24,23 +24,28 @@
                         value="{{ old('slug') }}">
                 </div>
                 @error('slug')
-                <p class="text-danger">
-                    {{ $message }}
-                </p>
-            @enderror
+                    <p class="text-danger">
+                        {{ $message }}
+                    </p>
+                @enderror
             </div>
             <div class="col-xl-3 col-md-3 mb-3">
                 <div class="mb-3">
                     <label for="">Category</label>
                     <select id="" name="category_id" class="form-control">
-                        <option value="1">Food</option>
+                        @if ($categories)
+                            @foreach ($categories as $item)
+                                <option value="{{ $item->id }}"
+                                    {{ old('category_id') == $item->id ? 'selected' : false }}>{{ $item->name }}</option>
+                            @endforeach
+                        @endif
                     </select>
                 </div>
                 @error('category_id')
-                <p class="text-danger">
-                    {{ $message }}
-                </p>
-            @enderror
+                    <p class="text-danger">
+                        {{ $message }}
+                    </p>
+                @enderror
             </div>
             <div class="col-xl-3 col-md-3 mb-3">
                 <div class="mb-3">
@@ -51,12 +56,12 @@
                     </select>
                 </div>
                 @error('status')
-                <p class="text-danger">
-                    {{ $message }}
-                </p>
-            @enderror
+                    <p class="text-danger">
+                        {{ $message }}
+                    </p>
+                @enderror
             </div>
-            <div class="col-xl-6 col-md-6 mb-6">
+            <div class="col-xl-3 col-md-3 mb-3">
                 <div class="mb-3">
                     <label for="">Quantity</label>
                     <input type="text" name="quantity"
@@ -64,16 +69,29 @@
                         value="{{ old('quantity') }}">
                 </div>
                 @error('quantity')
-                <p class="text-danger">
-                    {{ $message }}
-                </p>
-            @enderror
+                    <p class="text-danger">
+                        {{ $message }}
+                    </p>
+                @enderror
+            </div>
+            <div class="col-xl-3 col-md-3 mb-3">
+                <div class="mb-3">
+                    <label for="">Price</label>
+                    <input type="text" name="price"
+                        class="form-control   {{ $errors->has('price') ? 'is-invalid' : '' }} " placeholder="price"
+                        value="{{ old('price') }}">
+                </div>
+                @error('price')
+                    <p class="text-danger">
+                        {{ $message }}
+                    </p>
+                @enderror
             </div>
             <div class="col-xl-6 col-md-6 mb-6">
                 <div class="mb-3">
                     <label for="">Image</label>
                     <div class="input-group">
-                        <input type="text" name="image"  id="image"
+                        <input id="image" type="text" name="image"
                             class="form-control   {{ $errors->has('image') ? 'is-invalid' : '' }} " placeholder="image"
                             value="{{ old('image') }}">
                         <button id="lfm" type="button" data-input="image"
@@ -81,10 +99,10 @@
                     </div>
                 </div>
                 @error('image')
-                <p class="text-danger">
-                    {{ $message }}
-                </p>
-            @enderror
+                    <p class="text-danger">
+                        {{ $message }}
+                    </p>
+                @enderror
             </div>
             <div class="col-xl-6 col-md-6 mb-6">
                 <div class="mb-3">
@@ -98,15 +116,15 @@
                     <textarea id="" name="description" class="ckeditor" cols="30" rows="5">{{ old('description') }}</textarea>
                 </div>
                 @error('description')
-                <p class="text-danger">
-                    {{ $message }}
-                </p>
-            @enderror
+                    <p class="text-danger">
+                        {{ $message }}
+                    </p>
+                @enderror
             </div>
             <div class="col-xl-12 col-md-12 mb-12">
                 <div class="mb-3">
                     <button class="btn btn-primary">Post Products</button>
-                    <button class="btn btn-danger"><a href="{{ route('admin.products.index') }}" >Back</a></button>
+                    <button class="btn btn-danger"><a href="{{ route('admin.products.index') }}">Back</a></button>
 
                 </div>
             </div>

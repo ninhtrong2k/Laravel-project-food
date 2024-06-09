@@ -7,14 +7,21 @@ use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use Modules\Product\Src\Http\Requests\ProductRequest;
 use Modules\Product\Src\Repositories\ProductRepositoryInterface;
+use Modules\Category\Src\Repositories\CategoryRepositoryInterface;
 
 class ProductController extends Controller
 {
     protected $productRepository;
+    protected $categoryRepository;
 
-    public function __construct(ProductRepositoryInterface $productRepository)
+    public function __construct(
+        ProductRepositoryInterface $productRepository,
+        CategoryRepositoryInterface $categoryRepository
+        )
     {
         $this->productRepository = $productRepository;
+        $this->categoryRepository = $categoryRepository;
+
     }
     public function index()
     {
@@ -49,7 +56,8 @@ class ProductController extends Controller
     {
         $pageTitle = "Create Product";
         $pageHeading = "Create Product";
-        return view("product::admin.create",compact("pageTitle", "pageHeading"));
+        $categories = $this->categoryRepository->getAllCategories()->get();
+        return view("product::admin.create",compact("pageTitle", "pageHeading","categories"));
 
     }
     public function store(ProductRequest $request) {
@@ -76,6 +84,7 @@ class ProductController extends Controller
         $this->productRepository->update($product->id, $request->except(['_token']));
         return back()->with('msg', __('product::messages.update.success'));
     }
+
     public function delete($id) {
         $product = $this->productRepository->find($id);
         if(!$product) {
@@ -84,62 +93,4 @@ class ProductController extends Controller
         $this->productRepository->delete($product->id);
         return back()->with('msg', __('product::messages.delete.success'));
     }
-    // public function dataApi(){
-    //     return'ok';
-    // }
-    public function dataApi(Request $request)
-    {
-        // Lấy dữ liệu từ yêu cầu dưới dạng JSON
-        $data = $request->json()->all();
-        $dataArr = [];
-        $allPrice = 0;
-        foreach($data as $item){
-            $product = $this->productRepository->find($item['id']);
-            if(!empty($product)){
-                $dataArr[$product['id']] = array(
-                    'id' => $product['id'],
-                    'name' => $product['name'],
-                    'quantity' => $item['quantity'],
-                    'price' => $product['price'],
-                    'total_price' => $item['quantity'] * $product['price'],
-                );
-                $allPrice +=  $item['quantity'] * $product['price'];
-            }
-        }
-        if ($dataArr) {
-            $responseData = [
-                'status' => 'success',
-                'message' => 'Product found successfully',
-                'data' => $dataArr,
-                'allPrice'=> $allPrice,
-            ];
-        } else {
-            $responseData = [
-                'status' => 'error',
-                'message' => 'Product not found',
-            ];
-        }
-    
-        return response()->json($responseData);
-    }
-    public function getNameApi(Request $request){
-        $data = $request->json()->all();
-        $product = $this->productRepository->find($data['id']);
-        if ($product) {
-            $responseData = [
-                'status' => 'success',
-                'message' => 'Product found successfully',
-                'data' => $product['name'],
-            ];
-        } else {
-            $responseData = [
-                'status' => 'error',
-                'message' => 'Product not found',
-            ];
-        }
-        return response()->json($responseData);
-
-
-    }
-    
 }
