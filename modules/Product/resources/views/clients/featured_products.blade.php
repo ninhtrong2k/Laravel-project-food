@@ -2,7 +2,7 @@
     <h4 class="mb-4">Featured products</h4>
     <div class="d-flex align-items-center justify-content-start">
         <div class="rounded" style="width: 100px; height: 100px;">
-            <img src="img/featur-1.jpg" class="img-fluid rounded" alt="Image">
+            <img src="{{ asset('clients/img/featur-1.jpg')}}" class="img-fluid rounded" alt="Image">
         </div>
         <div>
             <h6 class="mb-2">Big Banana</h6>
@@ -21,7 +21,7 @@
     </div>
     <div class="d-flex align-items-center justify-content-start">
         <div class="rounded" style="width: 100px; height: 100px;">
-            <img src="img/featur-2.jpg" class="img-fluid rounded" alt="">
+            <img src="{{ asset('clients/img/featur-2.jpg')}}" class="img-fluid rounded" alt="">
         </div>
         <div>
             <h6 class="mb-2">Big Banana</h6>
@@ -40,7 +40,7 @@
     </div>
     <div class="d-flex align-items-center justify-content-start">
         <div class="rounded" style="width: 100px; height: 100px;">
-            <img src="img/featur-3.jpg" class="img-fluid rounded" alt="">
+            <img src="{{ asset('clients/img/featur-3.jpg')}}" class="img-fluid rounded" alt="">
         </div>
         <div>
             <h6 class="mb-2">Big Banana</h6>
@@ -59,7 +59,7 @@
     </div>
     <div class="d-flex align-items-center justify-content-start">
         <div class="rounded me-4" style="width: 100px; height: 100px;">
-            <img src="img/vegetable-item-4.jpg" class="img-fluid rounded" alt="">
+            <img src="{{ asset('clients/img/vegetable-item-4.jpg')}}" class="img-fluid rounded" alt="">
         </div>
         <div>
             <h6 class="mb-2">Big Banana</h6>
@@ -78,7 +78,7 @@
     </div>
     <div class="d-flex align-items-center justify-content-start">
         <div class="rounded me-4" style="width: 100px; height: 100px;">
-            <img src="img/vegetable-item-5.jpg" class="img-fluid rounded" alt="">
+            <img src="{{ asset('clients/img/vegetable-item-5.jpg')}}" class="img-fluid rounded" alt="">
         </div>
         <div>
             <h6 class="mb-2">Big Banana</h6>
@@ -97,7 +97,7 @@
     </div>
     <div class="d-flex align-items-center justify-content-start">
         <div class="rounded me-4" style="width: 100px; height: 100px;">
-            <img src="img/vegetable-item-6.jpg" class="img-fluid rounded" alt="">
+            <img src="{{ asset('clients/img/vegetable-item-6.jpg')}}" class="img-fluid rounded" alt="">
         </div>
         <div>
             <h6 class="mb-2">Big Banana</h6>

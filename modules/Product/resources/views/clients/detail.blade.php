@@ -11,7 +11,7 @@
                         <div class="col-lg-6">
                             <div class="border rounded">
                                 <a href="#">
-                                    <img src="{{ $product->image }}" class="img-fluid rounded" alt="Image">
+                                    <img src="{{ $product->image }}" class="img-fluid rounded" alt="Image" style="width: 100%; height: 100%; object-fit: cover;">
                                 </a>
                             </div>
                         </div>
@@ -114,7 +114,7 @@
                                 </div>
                                 <div id="nav-mission" class="tab-pane" role="tabpanel" aria-labelledby="nav-mission-tab">
                                     <div class="d-flex">
-                                        <img src="img/avatar.jpg" class="img-fluid rounded-circle p-3"
+                                        <img src="{{ asset('clients/img/avatar.jpg')}}" class="img-fluid rounded-circle p-3"
                                             style="width: 100px; height: 100px;" alt="">
                                         <div class="">
                                             <p class="mb-2" style="font-size: 14px;">April 12, 2024</p>
@@ -134,7 +134,7 @@
                                         </div>
                                     </div>
                                     <div class="d-flex">
-                                        <img src="img/avatar.jpg" class="img-fluid rounded-circle p-3"
+                                        <img src="{{ asset('clients/img/avatar.jpg')}}" class="img-fluid rounded-circle p-3"
                                             style="width: 100px; height: 100px;" alt="">
                                         <div class="">
                                             <p class="mb-2" style="font-size: 14px;">April 12, 2024</p>

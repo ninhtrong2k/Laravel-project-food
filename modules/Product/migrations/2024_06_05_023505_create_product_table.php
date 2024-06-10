@@ -18,7 +18,6 @@ return new class extends Migration {
             $table->string('slug', 100);
             $table->integer('category_id')->unsigned()->nullable();
             $table->text('image');
-            $table->integer('evaluate_id')->default(0);
             $table->integer('view')->default(0);
             $table->integer('quantity')->default(0);
             $table->integer('price')->default(0);

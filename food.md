@@ -21,7 +21,7 @@ name => var_char(100)
 slug => var_char(100)
 category_id => int(11)
 image_id => int(11)
-evaluate_id => int(11)
+evaluation_id => int(11)
 view => int(11)
 quantity => int(11)
 price => int(11) => new
@@ -43,7 +43,7 @@ url => var_char(255)
 created_at => datetime 
 updated_at => datetime
 
-=> table evaluate
+=> table evaluations
 id => int(11)
 user_id => int(11)
 => If the user is already logged in, he or she does not need to enter an email. If not, he or she must enter one
@@ -77,6 +77,7 @@ remember_token =>
 created_at => datetime 
 updated_at => datetime
 
+
 ## create migration table
 php artisan module:make-migration create_product_table Product
 
@@ -109,3 +110,10 @@ composer require yajra/laravel-datatables:"^9.0"
 ## Key sql
 
 composer require doctrine/dbal
+
+## seeder 
+php artisan module:make-seeder ProductSeeder Product
+
+php artisan db:seed --class=Modules\Product\Seeders\ProductSeeder
+php artisan db:seed --class=Modules\Category\Seeders\CategorySeeder
+

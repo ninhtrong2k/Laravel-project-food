@@ -9,8 +9,10 @@ use Modules\User\Src\Repositories\UserRepository;
 use Modules\Product\Src\Repositories\ProductRepository;
 use Modules\Category\Src\Repositories\CategoryRepository;
 use Modules\User\Src\Repositories\UserRepositoryInterface;
+use Modules\Evaluation\Src\Repositories\EvaluationRepository;
 use Modules\Product\Src\Repositories\ProductRepositoryInterface;
 use Modules\Category\Src\Repositories\CategoryRepositoryInterface;
+use Modules\Evaluation\Src\Repositories\EvaluationRepositoryInterface;
 
 class ModuleServiceProvide extends ServiceProvider
 {
@@ -28,12 +30,16 @@ class ModuleServiceProvide extends ServiceProvider
             ProductRepository::class
         );
         $this->app->singleton(
-           UserRepositoryInterface::class,
-           UserRepository::class
+            UserRepositoryInterface::class,
+            UserRepository::class
         );
         $this->app->singleton(
-          CategoryRepositoryInterface::class,
-          CategoryRepository::class
+            CategoryRepositoryInterface::class,
+            CategoryRepository::class
+        );
+        $this->app->singleton(
+            EvaluationRepositoryInterface::class,
+            EvaluationRepository::class
         );
 
     }
@@ -84,7 +90,7 @@ class ModuleServiceProvide extends ServiceProvider
         Route::group([
             'namespace' => 'Modules\\' . $module . '\\Src\\Http\\Controller',
             'middleware' => 'api',
-            'prefix' =>'api'
+            'prefix' => 'api'
         ], function () use ($modulePath) {
             if (File::exists($modulePath . '/routes/api.php')) {
                 $this->loadRoutesFrom($modulePath . '/routes/api.php');

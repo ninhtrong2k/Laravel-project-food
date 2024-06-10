@@ -30,23 +30,23 @@
                     <p class="mb-0 me-3">Please rate:</p>
                     <div class="star-rating d-flex align-items-center" style="font-size: 12px;">
                         <label>
-                            <input type="radio" name="rating" value="1">
+                            <input type="radio" name="star" value="1">
                             <i class="fa fa-star text-muted star-comment" data-value="1"></i>
                         </label>
                         <label>
-                            <input type="radio" name="rating" value="2">
+                            <input type="radio" name="star" value="2">
                             <i class="fa fa-star text-muted star-comment" data-value="2"></i>
                         </label>
                         <label>
-                            <input type="radio" name="rating" value="3">
+                            <input type="radio" name="star" value="3">
                             <i class="fa fa-star text-muted star-comment" data-value="3"></i>
                         </label>
                         <label>
-                            <input type="radio" name="rating" value="4">
+                            <input type="radio" name="star" value="4">
                             <i class="fa fa-star text-muted star-comment" data-value="4"></i>
                         </label>
                         <label>
-                            <input type="radio" name="rating" value="5">
+                            <input type="radio" name="star" value="5">
                             <i class="fa fa-star text-muted star-comment" data-value="5"></i>
                         </label>
                     </div>

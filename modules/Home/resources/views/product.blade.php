@@ -35,7 +35,7 @@
                                 <div class="rounded position-relative fruite-item">
                                     <div class="fruite-img">
                                         <img src="${image}" class="img-fluid w-100 rounded-top"
-                                            alt="${name}">
+                                            alt="${name}" >
                                     </div>
                                     <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
                                         style="top: 10px; left: 10px;">Fruits</div>
