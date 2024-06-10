@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
+use Modules\Product\Src\Models\Product;
 use Modules\Product\Src\Http\Requests\ProductRequest;
 use Modules\Product\Src\Repositories\ProductRepositoryInterface;
 use Modules\Category\Src\Repositories\CategoryRepositoryInterface;
@@ -18,32 +19,46 @@ class ProductController extends Controller
 
     public function __construct(
         ProductRepositoryInterface $productRepository,
-        CategoryRepositoryInterface $categoryRepository , 
-        EvaluationRepositoryInterface $evaluationRepository ,
-        )
-    {
+        CategoryRepositoryInterface $categoryRepository,
+        EvaluationRepositoryInterface $evaluationRepository,
+    ) {
         $this->productRepository = $productRepository;
         $this->categoryRepository = $categoryRepository;
         $this->evaluationRepository = $evaluationRepository;
 
     }
+    
     public function index()
     {
-        $pageTitle = "List Product";
-        $pageHeading = "List Product";
-        return view("product::admin.index",compact("pageTitle", "pageHeading"));
+        $products = $this->productRepository->getProducts(9);
+        $categories = $this->categoryRepository->getAllCategories()->get();
+
+        // dd($products);
+        return view("product::clients.index", compact("products","categories"));
     }
-    public function detail($id){
+    public function listProductsPage(){
+        $products = $this->productRepository->getProducts(9);
+        return response()->json([
+            'products' => $products->items(),
+            'links' => $products->links('vendor.pagination.default')->toHtml(), 
+        ]);
+    }
+    public function detail($id, Request $request)
+    {
         $categories = $this->categoryRepository->getAllCategories()->get();
         $product = $this->productRepository->find($id);
-        $relatedProduct = $this->productRepository->getProduct($product->category_id,4);
-        if(!$product){
+        $relatedProduct = $this->productRepository->getProduct($product->category_id, 4);
+        if (!$product) {
             return abort(404);
         }
-        return view('product::clients.detail',compact('product','categories','relatedProduct'));
+        $breadCrumb = 'Product Details';
+        $pageBreadCrumb = $product->name;
+        $currentUrl = $request->url();
+        return view('product::clients.detail', compact('product', 'categories', 'relatedProduct', 'breadCrumb', 'pageBreadCrumb', 'currentUrl'));
     }
 
-    public function comment($id,Request $request){
+    public function comment($id, Request $request)
+    {
         $comment = $request->except(['_token']);
         $comment['product_id'] = $id;
         // dd($comment);
@@ -68,7 +83,7 @@ class ProductController extends Controller
                     'price' => $product['price'],
                     'total_price' => $totalItemPrice,
                 ];
-                $newListCard [$product['id']] = [
+                $newListCard[$product['id']] = [
                     'id' => $product['id'],
                     'quantity' => $item['quantity'],
                 ];
@@ -81,7 +96,7 @@ class ProductController extends Controller
             'data' => $dataArr ? ['listCart' => $dataArr, 'newListCard' => $newListCard, 'totalPrice' => $totalPrice] : []
         ]);
     }
-    
+
     public function findName(Request $request)
     {
         $data = $request->json()->all();
@@ -92,7 +107,7 @@ class ProductController extends Controller
             'data' => $product ? $product['name'] : []
         ]);
     }
-    
+
     public function listProducts(Request $request)
     {
         $data = $request->all();
@@ -104,15 +119,15 @@ class ProductController extends Controller
                 'data' => []
             ], 400);
         }
-        $product = $this->productRepository->getProduct($data['categoryId'],4);
+        $product = $this->productRepository->getProduct($data['categoryId'], 4);
         return response()->json([
             'status' => $product ? 'success' : 'error',
             'message' => $product ? 'Get the product list successfully' : 'Get the list of failed products',
-            'data' => $product ? : []
+            'data' => $product ?: []
         ]);
     }
-    
-    
 
-    
+
+
+
 }

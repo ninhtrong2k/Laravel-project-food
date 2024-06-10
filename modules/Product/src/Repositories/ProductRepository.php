@@ -23,4 +23,8 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         }
         return $query->limit($limit)->get();
     }
+
+    public function getProducts($limit){
+        return $this->model->latest()->paginate($limit);
+    }
 }

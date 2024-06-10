@@ -8,5 +8,5 @@ class EvaluationRepository extends BaseRepository implements EvaluationRepositor
     public function getModel(){
         return Evaluation::class;
     } 
-
+    
 }

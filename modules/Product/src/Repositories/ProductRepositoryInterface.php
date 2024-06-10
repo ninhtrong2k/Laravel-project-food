@@ -7,4 +7,5 @@ interface ProductRepositoryInterface extends RepositoryInterface
 {
     public function getAllProduct();
     public function getProduct($category, $limit = 8);
+    public function getProducts($limit);
 }

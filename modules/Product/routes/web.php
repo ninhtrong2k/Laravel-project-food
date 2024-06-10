@@ -18,12 +18,14 @@ Route::prefix('data')->name('data.')->group(function () {
     Route::prefix('products')->name('products.')->group(function () {
         Route::post('name', 'Clients\ProductController@findName');
         Route::post('list-cart', 'Clients\ProductController@listCart');
-        Route::post('list-products', 'Clients\ProductController@listProducts')->name('data');
+        Route::post('list-products', 'Clients\ProductController@listProducts');
+        Route::post('products', 'Clients\ProductController@listProductsPage');
     });
 });
 
 
 Route::group(['as' => 'products.'],function () {
+    Route::get('/shop','Clients\ProductController@index')->name('shop');
     Route::get('/shop-detail/{id}/{slug}','Clients\ProductController@detail')->name('detail');
     Route::post('/comment/{id}','Clients\ProductController@comment')->name('comment');
 });
