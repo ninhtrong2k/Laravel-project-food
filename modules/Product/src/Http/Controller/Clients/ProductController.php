@@ -30,17 +30,28 @@ class ProductController extends Controller
     
     public function index()
     {
-        $products = $this->productRepository->getProducts(9);
+        $products = $this->productRepository->getProducts(9,[]); 
         $categories = $this->categoryRepository->getAllCategories()->get();
 
         // dd($products);
         return view("product::clients.index", compact("products","categories"));
     }
-    public function listProductsPage(){
-        $products = $this->productRepository->getProducts(9);
+    // api shop 
+    public function listProductsPage(Request $request){
+        $data = $request->json()->all();
+        if (isset($data['selectedCategory']) && !in_array($data['selectedCategory'], [1, 2, 3, 4, 5, 999])) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Invalid category ID',
+                'data' => []
+            ], 400);
+        }
+        $count = $this->productRepository->countProducts($data);
+        $products = $this->productRepository->getProducts(9,$data);
         return response()->json([
             'products' => $products->items(),
             'links' => $products->links('vendor.pagination.default')->toHtml(), 
+            'count' => $count,
         ]);
     }
     public function detail($id, Request $request)

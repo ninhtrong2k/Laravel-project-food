@@ -7,6 +7,20 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+/* Animations for display product */
+.fruite-item {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s, transform 0.5s;
+}
+
+.fruite-item.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
 /*** Spinner Start ***/
 #spinner {
     opacity: 0;
