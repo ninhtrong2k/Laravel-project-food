@@ -27,17 +27,18 @@ class ProductController extends Controller
         $this->evaluationRepository = $evaluationRepository;
 
     }
-    
+
     public function index()
     {
-        $products = $this->productRepository->getProducts(9,[]); 
+        $products = $this->productRepository->getProducts(9, []);
         $categories = $this->categoryRepository->getAllCategories()->get();
 
         // dd($products);
-        return view("product::clients.index", compact("products","categories"));
+        return view("product::clients.index", compact("products", "categories"));
     }
     // api shop 
-    public function listProductsPage(Request $request){
+    public function listProductsPage(Request $request)
+    {
         $data = $request->json()->all();
         if (isset($data['selectedCategory']) && !in_array($data['selectedCategory'], [1, 2, 3, 4, 5, 999])) {
             return response()->json([
@@ -46,12 +47,41 @@ class ProductController extends Controller
                 'data' => []
             ], 400);
         }
-        $count = $this->productRepository->countProducts($data);
-        $products = $this->productRepository->getProducts(9,$data);
+        if (isset($data['selectFilter']) && !in_array($data['selectFilter'], [0,1, 2, 3, 4])) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Invalid Filter ID',
+                'data' => []
+            ], 400);
+        }
+        // Content Search
+        $priceInput1 = $data['priceInput1'] ?? 0;
+        $priceInput2 = $data['priceInput2'] ?? 0;
+        if ($data['priceInput1'] > $data['priceInput2']) {
+            $priceInput1 = $data['priceInput2'];
+            $priceInput2 = $data['priceInput1'];
+        }
+        $keySelectedCategory = ($data['selectedCategory'] !== '999') ?
+            " category : " . $this->nameCategory($data['selectedCategory']) . " ," : '';
+        $keyPriceInput1 = ($priceInput1 !== '0' && $priceInput2 !== '0') ?
+            " Lowest price : $" . $priceInput1 . " ," : '';
+        $keyPriceInput2 = ($priceInput1 !== '0' && $priceInput2 !== '0') ?
+            " Highest price : $" . $priceInput2 . " ," : '';
+        $keySelectFilter = ($data['selectFilter'] !== '0') ?
+            " filter : " . $this->nameSelectFilter($data['selectFilter']) . " ," : '';
+        $keyKeywordInputs = (!empty($data['keywordInputs'])) ?
+            " keywords : " . $data['keywordInputs'] : '';
+        if ($keySelectedCategory !== '' || $keyPriceInput1 !== '' || $keyPriceInput2 !== '' || $keySelectFilter !== '' || $keyKeywordInputs !== '') {
+            $count = ' results : ' .$this->productRepository->countProducts($data);
+        }else {
+            $count = '';
+        }
+        // END Content Search
+        $products = $this->productRepository->getProducts(9, $data);
         return response()->json([
             'products' => $products->items(),
-            'links' => $products->links('vendor.pagination.default')->toHtml(), 
-            'count' => $count,
+            'links' => $products->links('vendor.pagination.default')->toHtml(),
+            'search' => rtrim($keySelectedCategory . $keyPriceInput1 . $keyPriceInput2 . $keySelectFilter . $keyKeywordInputs . $count, ','),
         ]);
     }
     public function detail($id, Request $request)
@@ -138,7 +168,20 @@ class ProductController extends Controller
         ]);
     }
 
-
-
+    private function nameCategory($id)
+    {
+        $category = $this->categoryRepository->find($id);
+        return $category ? $category->name : "Unknown Category";
+    }
+    private function nameSelectFilter($id)
+    {
+        $filters = [
+            '1' => 'Oldest Products',
+            '2' => 'Latest Products',
+            '3' => 'Highest Price Products',
+            '4' => 'Lowest Price Products',
+        ];
+        return isset($filters[$id]) ? $filters[$id] : "Unknown Filter";
+    }
 
 }

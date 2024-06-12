@@ -209,6 +209,7 @@
                     {{ $category->id }}: "{{ $category->name }}",
                 @endforeach
             };
+
             function nameCategory(id) {
                 return categories[id] || "Unknown Category";
             }
@@ -217,7 +218,6 @@
 @endsection
 @section('scripts')
     <script>
-
         const productsContainer = document.getElementById('products-container');
         const paginationContainer = document.getElementById('pagination-container');
         const keywordInputs = document.getElementById('search-keyword');
@@ -246,17 +246,15 @@
                 debounceTimer = setTimeout(() => {
                     fetchProductsData();
                     checkFilterPriceProduct();
-                    showContentSearch()
                 }, 300);
             }
 
             categoryInputs.forEach(input => {
                 input.addEventListener('change', logValues);
             });
-
-            keywordInputs.addEventListener('input', logValues);
             priceInput1.addEventListener('input', logValues);
             priceInput2.addEventListener('input', logValues);
+            keywordInputs.addEventListener('input', logValues);
             selectFilter.addEventListener('input', logValues);
 
             restFilter.addEventListener('click', function() {
@@ -283,7 +281,6 @@
                 event.preventDefault();
                 if (event.target.tagName === 'A') {
                     const url = event.target.getAttribute('href');
-                    console.log(url);
                     fetchProducts(url, {
                         method: 'POST',
                         headers: {
@@ -300,11 +297,15 @@
             return `<div class="col-md-6 col-lg-6 col-xl-4">
                 <div class="rounded position-relative fruite-item">
                     <div class="fruite-img">
-                        <img src="${product.image}" class="img-fluid w-100 rounded-top" alt="${product.name}">
+                        <a href="/shop-detail/${product.id}/${product.slug}">
+                            <img src="${product.image}" class="img-fluid w-100 rounded-top" alt="${product.name}">
+                        </a>
                     </div>
                     <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">${product.categories.name}</div>
                     <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                    <a href="/shop-detail/${product.id}/${product.slug}">
                         <h4>${product.name}</h4>
+                    </a>
                         <p class="line-clamp" >${product.description}</p>
                         <div class="d-flex justify-content-between flex-lg-wrap">
                             <p class="text-dark fs-5 fw-bold mb-0">$${product.price} / kg</p>
@@ -347,32 +348,17 @@
                     }).showToast();
                     // Reset = 0 if have price input
                     selectFilter.value = '0';
+                    fetchProductsData();
+
                 }
             }
         }
 
-        showContentSearch = () => {
-            const searchData = getSearchData();
-            selectFilter.value = searchData.selectFilter;
-            if (searchData.selectedCategory !== '999' || searchData
-                .priceInput1 !== '0' ||
-                searchData.priceInput2 !== '0' ||
-                searchData.selectFilter !== '0' || searchData.keywordInputs !== ''
-            ) {
-                const keySelectedCategory = (searchData.selectedCategory !== '999') ?
-                    ` category : ${nameCategory(searchData.selectedCategory)} ,` : '';
-                const keyPriceInput1 = (searchData.priceInput1 !== '0') ?
-                    ` price 1 : $${searchData.priceInput1} ,` : '';
-                const keyPriceInput2 = (searchData.priceInput2 !== '0') ?
-                    ` price 2 : $${searchData.priceInput2} ,` : '';
-                const keySelectFilter = (searchData.selectFilter !== '0') ?
-                    ` filter : ${searchData.selectFilter} ,` : '';
-                const keyKeywordInputs = (searchData.keywordInputs !== '') ?
-                    ` keywords : ${searchData.keywordInputs} ` : '';
-
+        showContentSearch = (data) => {
+            if (data) {
                 contentSearch.style.display = 'block';
                 contentSearch.innerHTML =
-                    `<b>You search => ${keySelectedCategory}${keyPriceInput1}${keyPriceInput2}${keySelectFilter}${keyKeywordInputs} </b>`;
+                    `<b>You search => ${data} </b>`;
             } else {
                 contentSearch.style.display = 'none';
             }
@@ -431,6 +417,7 @@
 
                     // Animations for displaying the product
                     animationProductList()
+                    showContentSearch(data.search);
 
                 }, 1000);
             } catch (error) {

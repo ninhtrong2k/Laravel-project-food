@@ -28,4 +28,6 @@ Route::group(['as' => 'products.'],function () {
     Route::get('/shop','Clients\ProductController@index')->name('shop');
     Route::get('/shop-detail/{id}/{slug}','Clients\ProductController@detail')->name('detail');
     Route::post('/comment/{id}','Clients\ProductController@comment')->name('comment');
+    // Cart
+    Route::get('/cart','Clients\CartController@index')->name('cart');
 });

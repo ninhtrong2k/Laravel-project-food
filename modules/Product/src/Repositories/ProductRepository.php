@@ -26,36 +26,54 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
 
     public function getProducts($limit, $data = [])
     {
-        $query = $this->model->latest();
-        
-        // Filter Price 
-        if ($data && $data['priceInput1'] != 0 && $data['priceInput2'] != 0) {
-            $priceInput1 = $data['priceInput1'];
-            $priceInput2 = $data['priceInput2'];
-            if ($data['priceInput1'] > $data['priceInput2']) {
-                $priceInput1 = $data['priceInput2'];
-                $priceInput2 = $data['priceInput1'];
+        $query = $this->model;
+    
+        // Sắp xếp
+        if (isset($data['selectFilter'])) {
+            if ($data['selectFilter'] == '0') {
+                $query = $query->latest(); 
+            }else if ($data['selectFilter'] == '2') {
+                $query = $query->latest(); // Mới nhất
+            } elseif ($data['selectFilter'] == '1') {
+                $query = $query->oldest(); // Cũ nhất
+            } elseif ($data['selectFilter'] == '3') {
+                $query = $query->orderBy('price', 'desc'); // Giá cao nhất
+            } elseif ($data['selectFilter'] == '4') {
+                $query = $query->orderBy('price', 'asc'); // Giá thấp nhất
             }
-            $query->whereBetween('price', [$priceInput1, $priceInput2]);
+        }else {
+            $query = $query->latest(); 
         }
-
-        // Filter category 
-        if ($data && $data['selectedCategory'] != 999) {
-            $query->where('category_id', '=', $data['selectedCategory']);
+    
+        // Lọc theo giá 
+        if (isset($data['priceInput1']) && isset($data['priceInput2']) && $data['priceInput1'] != 0 && $data['priceInput2'] != 0) {
+            $priceInput1 = min($data['priceInput1'], $data['priceInput2']);
+            $priceInput2 = max($data['priceInput1'], $data['priceInput2']);
+            $query = $query->whereBetween('price', [$priceInput1, $priceInput2]);
         }
-        if ($data && $data['keywordInputs']) {
-            $keyword =  $data['keywordInputs'];
-            $query->where(function ($query) use ($keyword) {
+    
+        // Lọc theo danh mục 
+        if (isset($data['selectedCategory']) && $data['selectedCategory'] != 999) {
+            $query = $query->where('category_id', '=', $data['selectedCategory']);
+        }
+    
+        // Lọc theo từ khóa
+        if (isset($data['keywordInputs']) && !empty($data['keywordInputs'])) {
+            $keyword = $data['keywordInputs'];
+            $query = $query->where(function ($query) use ($keyword) {
                 $query->where('name', 'like', '%' . $keyword . '%')
-                    ->orWhere('detail', 'like', '%' . $keyword . '%');
+                      ->orWhere('detail', 'like', '%' . $keyword . '%');
             });
         }
+    
         return $query->paginate($limit);
     }
-    public function countProducts( $data = [])
+    
+    
+    public function countProducts($data = [])
     {
         $query = $this->model->latest();
-        
+
         // Filter Price 
         if ($data && $data['priceInput1'] != 0 && $data['priceInput2'] != 0) {
             $priceInput1 = $data['priceInput1'];
@@ -72,7 +90,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             $query->where('category_id', '=', $data['selectedCategory']);
         }
         if ($data && $data['keywordInputs']) {
-            $keyword =  $data['keywordInputs'];
+            $keyword = $data['keywordInputs'];
             $query->where(function ($query) use ($keyword) {
                 $query->where('name', 'like', '%' . $keyword . '%')
                     ->orWhere('detail', 'like', '%' . $keyword . '%');
@@ -80,4 +98,6 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         }
         return $query->count();
     }
+
+    
 }
