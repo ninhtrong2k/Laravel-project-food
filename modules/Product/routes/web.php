@@ -30,4 +30,5 @@ Route::group(['as' => 'products.'],function () {
     Route::post('/comment/{id}','Clients\ProductController@comment')->name('comment');
     // Cart
     Route::get('/cart','Clients\CartController@index')->name('cart');
+    Route::get('/check-out','Clients\CartController@checkOutCart')->name('check-out');
 });

@@ -122,6 +122,7 @@ class ProductController extends Controller
                     'name' => $product['name'],
                     'quantity' => $item['quantity'],
                     'price' => $product['price'],
+                    'image' => $product['image'],
                     'total_price' => $totalItemPrice,
                 ];
                 $newListCard[$product['id']] = [

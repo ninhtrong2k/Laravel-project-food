@@ -69,7 +69,9 @@
             <li class="list-group-item">Cart data is invalid or empty (no serve)</li>';
         </ul>
 
-        <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
+        <a href="/cart">
+            <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
+        </a>
     </div>
 </div>
 {{-- Cart  --}}

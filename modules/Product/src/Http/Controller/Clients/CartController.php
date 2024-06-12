@@ -11,10 +11,16 @@ class CartController extends Controller
     {
     }
     public function index(Request $request){
-        $breadCrumb = 'Product Details';
-        $pageBreadCrumb = 'Product Details';
+        $breadCrumb = 'Carts';
+        $pageBreadCrumb = 'Carts Details';
         $currentUrl = $request->url();
 
-        return view('product::clients.cart', compact('breadCrumb', 'pageBreadCrumb'));
+        return view('product::clients.cart', compact('breadCrumb', 'pageBreadCrumb','currentUrl'));
+    }
+    public function checkOutCart(Request $request){
+        $breadCrumb = 'Carts';
+        $pageBreadCrumb = 'Checkout';
+        $currentUrl = $request->url();
+        return view('product::clients.checkout', compact('breadCrumb', 'pageBreadCrumb','currentUrl'));
     }
 }
